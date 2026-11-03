@@ -1,6 +1,19 @@
 import React from 'react';
 
-class ShoppingItem extends React.Component {
+// Описываем интерфейс для объекта покупки
+interface Item {
+  id: number;
+  name: string;
+  price: number;
+}
+
+// Описываем типы для props
+interface ShoppingItemProps {
+  item: Item;
+  onDelete: (id: number) => void;
+}
+
+class ShoppingItem extends React.Component<ShoppingItemProps> {
   render() {
     const { item, onDelete } = this.props;
 

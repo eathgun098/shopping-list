@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import ShoppingItem from './ShoppingItem';
 
-class App extends React.Component {
-  constructor(props) {
+interface Item {
+  id: number;
+  name: string;
+  price: number;
+}
+
+interface AppState {
+  items: Item[];
+  name: string;
+  price: string;
+}
+
+class App extends React.Component<{}, AppState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       items: [
@@ -14,18 +26,18 @@ class App extends React.Component {
     };
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value } as unknown as Pick<AppState, keyof AppState>);
   };
 
-  handleAddItem = (e) => {
+  handleAddItem = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, price, items } = this.state;
 
     if (!name || !price) return;
 
-    const newItem = {
+    const newItem: Item = {
       id: Date.now(),
       name: name,
       price: parseFloat(price)
@@ -38,7 +50,7 @@ class App extends React.Component {
     });
   };
 
-  handleDeleteItem = (id) => {
+  handleDeleteItem = (id: number) => {
     this.setState({
       items: this.state.items.filter(item => item.id !== id)
     });
@@ -50,7 +62,7 @@ class App extends React.Component {
 
     return (
       <div style={{ maxWidth: '400px', margin: '20px auto', fontFamily: 'Arial, sans-serif' }}>
-        <h2>Список покупок</h2>
+        <h2>Список покупок (TypeScript)</h2>
         
         <form onSubmit={this.handleAddItem} style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
           <input 
